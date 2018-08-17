@@ -1,0 +1,1 @@
+postsSELECT * FROM forum_db.users;
