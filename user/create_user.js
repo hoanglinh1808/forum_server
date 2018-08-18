@@ -1,6 +1,5 @@
 var con = require('../mysqldb.js');
 var hpass = require('../hash_password.js')
-
 function randomInt(low, high) {
   return Math.floor(Math.random() * (high - low) + low);
 }
