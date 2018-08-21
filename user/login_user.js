@@ -31,7 +31,7 @@ exports.loginUser = function loginUser(user_phone, user_password, callback) {
     // console.log(rows[0].user_DOB)
     var result = {};
     if (compareUserpassword(user_Password, rows[0].user_password) == true) {
-      var data = serverAnswerShowUser(
+      var user_data = serverAnswerShowUser(
         rows[0].user_ID,
         rows[0].user_fullname,
         rows[0].user_phone,
@@ -40,7 +40,7 @@ exports.loginUser = function loginUser(user_phone, user_password, callback) {
         rows[0].user_DOB,
         rows[0].user_role
       )
-      result = [{'status' : 'done', data}]
+      result = [{'status' : 'done', user_data}]
       callback(null, JSON.stringify(result));
     }
     else {
