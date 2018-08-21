@@ -40,7 +40,12 @@ exports.loginUser = function loginUser(user_phone, user_password, callback) {
         rows[0].user_DOB,
         rows[0].user_role
       )
-      result = [{'status' : 'done', user_data}]
+      result = [{
+        'serverResponse': {
+          'status' : 'done',
+          user_data
+        }
+      }]
       callback(null, JSON.stringify(result));
     }
     else {
