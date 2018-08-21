@@ -8,15 +8,16 @@ function compareUserpassword(passwordInput, passworDB) {
   else return false
 }
 
-function serverAnswerShowUser(Id, Username, Phone, Email, Gender, DateBirth) {
+function serverAnswerShowUser(Id, Username, Phone, Email, Gender, DateBirth, User_role) {
   return {
+    status         : 'done',
     user_ID        : Id,
     user_fullname  : Username,
     user_phone     : Phone,
     user_email     : Email,
     user_gender    : Gender,
     user_DOB       : DateBirth,
-    user_role      : "1",
+    user_role      : User_role,
   };
 }
 
@@ -31,22 +32,15 @@ exports.loginUser = function loginUser(user_phone, user_password, callback) {
     // console.log(rows[0].user_DOB)
     var result = {};
     if (compareUserpassword(user_Password, rows[0].user_password) == true) {
-      var user_data = serverAnswerShowUser(
+      callback(null, JSON.stringify(serverAnswerShowUser(
         rows[0].user_ID,
         rows[0].user_fullname,
         rows[0].user_phone,
         rows[0].user_email,
         rows[0].user_gender,
         rows[0].user_DOB,
-        rows[0].user_role
-      )
-      result = [{
-        'serverResponse': {
-          'status' : 'done',
-          user_data
-        }
-      }]
-      callback(null, JSON.stringify(result));
+        rows[0].user_role,
+      )));
     }
     else {
       result = {'status' : 'fail'}
