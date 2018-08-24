@@ -2,7 +2,7 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-
+var dateTime = require('node-datetime');
 
 var app = express();
 var db  = require('./mysqldb');
@@ -51,7 +51,8 @@ app.post('/signup', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  console.log("/login");
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "POST /login")
   sess = req.session;
   var user_phone = req.body.user_phone;
   var user_password = req.body.user_password;
@@ -65,17 +66,19 @@ app.post('/login', function(req, res) {
   });
 });
 
-app.post('/check_phone', function(req, res) {
-console.log("/check_phone");
-var user_phone = req.body.user_phone;
-  cPhone.checkPhone(user_phone, function(err, result) {
-    console.log(result);
-    res.send(result);
-  });
-});
+// app.post('/check_phone', function(req, res) {
+
+// console.log("/check_phone");
+// var user_phone = req.body.user_phone;
+//   cPhone.checkPhone(user_phone, function(err, result) {
+//     console.log(result);
+//     res.send(result);
+//   });
+// });
 
 app.post('/create_posts', function(req, res) {
-  console.log("/create_posts");
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "POST /create_posts")
   var posts_title = req.body.posts_title;
   var posts_content = req.body.posts_content;
   var posts_attachment = req.body.posts_attachment;
@@ -87,9 +90,10 @@ app.post('/create_posts', function(req, res) {
 });
 
 app.post('/verify_post', function(req, res) {
-  console.log("verify_post");
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "POST /verify_post")
   var post_ID = req.body.post_ID;
-  var token = 368214;
+  var token = sess.token;
   vPost.verifyPost(token, post_ID, function(err, result) {
     console.log(result);
     res.send(result);
