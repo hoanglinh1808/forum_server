@@ -18,6 +18,7 @@ function serverAnswerShowUser(Id, Username, Phone, Email, Gender, DateBirth, Use
     user_gender    : Gender,
     user_DOB       : DateBirth,
     user_role      : User_role,
+    user_token     : "1"
   };
 }
 
@@ -28,19 +29,16 @@ exports.loginUser = function loginUser(user_phone, user_password, callback) {
   var sql = "SELECT * FROM `forum_db`.`users` " +
             "WHERE `forum_db`.`users`.`user_phone` = '" + user_phone + "'";
   con.query(sql, function (err, rows) {
-    // console.log(rows[0].user_password)
-    // console.log(rows[0].user_DOB)
     var result = {};
     if (compareUserpassword(user_Password, rows[0].user_password) == true) {
       callback(null, JSON.stringify(serverAnswerShowUser(
-        rows[0].user_ID,
         rows[0].user_fullname,
         rows[0].user_phone,
         rows[0].user_email,
         rows[0].user_gender,
         rows[0].user_DOB,
         rows[0].user_role,
-      )));
+      )), rows[0].user_ID);
     }
     else {
       result = {'status' : 'fail'}
