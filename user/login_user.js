@@ -8,17 +8,15 @@ function compareUserpassword(passwordInput, passworDB) {
   else return false
 }
 
-function serverAnswerShowUser(Id, Username, Phone, Email, Gender, DateBirth, User_role) {
+function serverAnswerShowUser(Username, Phone, Email, Gender, DateBirth, User_role) {
   return {
     status         : 'done',
-    user_ID        : Id,
     user_fullname  : Username,
     user_phone     : Phone,
     user_email     : Email,
     user_gender    : Gender,
     user_DOB       : DateBirth,
-    user_role      : User_role,
-    user_token     : "1"
+    user_role      : User_role
   };
 }
 

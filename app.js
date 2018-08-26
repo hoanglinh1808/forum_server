@@ -10,9 +10,12 @@ var db  = require('./mysqldb');
 var hPassword  = require('./hash_password.js');
 var cUser = require('./user/create_user.js');
 var lUser = require('./user/login_user.js');
+var loUser = require('./user/logout_user.js');
 var cPhone = require('./user/check_phone.js');
 var cPost = require('./post/create_posts.js');
 var vPost = require('./post/verify_posts.js');
+var suvPost = require('./admin/show_unverified.js');
+var svPost = require('./user/show_verified.js');
 
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(cookieParser());
 app.use(session({
   secret : "secret",
-  saveUninitialized: true,
+  saveUninitialized: false,
   resave: true
 }));
 
@@ -66,15 +69,23 @@ app.post('/login', function(req, res) {
   });
 });
 
-// app.post('/check_phone', function(req, res) {
-
-// console.log("/check_phone");
-// var user_phone = req.body.user_phone;
-//   cPhone.checkPhone(user_phone, function(err, result) {
-//     console.log(result);
-//     res.send(result);
-//   });
+// app.get('/logout', function (req, res) {
+//   let createdDate = dateTime.create().format('Y-m-d H:M:S')
+//   console.log("[" + createdDate + "] " + "GET /logout")
+//   req.logout;
+//   res.send("status done");
 // });
+
+app.get('/logout', function(req, res) {
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "GET /logout")
+  var token = sess.token;
+  loUser.logoutUser(sess, function(err, result) {
+    console.log(result)
+    res.send(result)
+    //res.redirect('/login')
+  })
+})
 
 app.post('/create_posts', function(req, res) {
   let createdDate = dateTime.create().format('Y-m-d H:M:S')
@@ -99,4 +110,25 @@ app.post('/verify_post', function(req, res) {
     res.send(result);
   });
 });
+
+app.get('/show_unverified', function(req, res) {
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "GET /show_unverified")
+  console.log("show_unverified");
+  suvPost.showUnverified(function(err, result) {
+    console.log(result);
+    res.send(result);
+  });
+});
+
+app.get('/show_verified', function(req, res) {
+  let createdDate = dateTime.create().format('Y-m-d H:M:S')
+  console.log("[" + createdDate + "] " + "GET /show_verified")
+  console.log("show_verified");
+  svPost.showVerified(function(err, result) {
+    console.log(result);
+    res.send(result);
+  });
+});
+
 module.exports = app;
